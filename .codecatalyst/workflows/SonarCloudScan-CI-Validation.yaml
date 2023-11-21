@@ -1,0 +1,22 @@
+Name: SonarCloudScan-CI-Validation
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PullRequest
+    Events: [ open, revision ]
+    Branches:
+      - feature-.*
+Actions:
+  ValidateSonarCloudScan:
+    Identifier: .
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Compute:
+      Type: EC2
+    Configuration:
+      SonarOrganization: dejanmilisavljevic
+      SonarToken: ${Secrets.SONAR_TOKEN}
+      SonarProjectBaseDir: '.'
+      SonarProjectKey: codecatalyst
+      SonarAdditionalArgs: ''
+      SonarBranchName: '${WorkflowSource.BranchName}'
