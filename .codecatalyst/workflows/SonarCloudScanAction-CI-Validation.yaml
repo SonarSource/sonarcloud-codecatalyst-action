@@ -1,0 +1,17 @@
+Name: SonarCloudScanAction-CI-Validation
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PullRequest
+    Events: [ open, revision ]
+    Branches:
+      - feature-.*
+Actions:
+  ValidateSonarCloudScanAction:
+    Identifier: .
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Configuration:
+      WhoToGreet : 'TEST'
+      HowToGreet : 'TEST'
+
