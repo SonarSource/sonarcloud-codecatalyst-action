@@ -11,7 +11,7 @@
         "package": "tsc && jest && ncc build -o dist",
         "test": "jest",
         "all": "npm run build && npm run format && npm run lint && npm run package",
-        "validate": "npm run lint && npm run format-check && npm run test"
+        "validate": "npm run lint && npm run format-check"
     },
     "dependencies": {
         "@aws/codecatalyst-adk-core": "^1.0.15",

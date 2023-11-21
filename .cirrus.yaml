@@ -25,6 +25,12 @@ node_modules_cache_template: &NODE_MODULES_CACHE_TEMPLATE
             - "node_modules"
         fingerprint_script: cat package-lock.json
 
+coverage_cache_template: &COVERAGE_CACHE_TEMPLATE
+    coverage_cache:
+        folders:
+            - "coverage"
+        fingerprint_script: echo $CIRRUS_BUILD_ID
+
 install_dependencies_task:
     <<: *NODE_MODULES_CACHE_TEMPLATE
     timeout_in: 30m
@@ -33,11 +39,20 @@ install_dependencies_task:
     script:
         make install
 
+build_task:
+    <<: *NODE_MODULES_CACHE_TEMPLATE
+    <<: *COVERAGE_CACHE_TEMPLATE
+    eks_container:
+        <<: *BUILD_TEMPLATE
+    script:
+        make build
+
 validate_task:
     <<: *NODE_MODULES_CACHE_TEMPLATE
     eks_container:
         <<: *BUILD_TEMPLATE
     depends_on:
+        - build
         - install_dependencies
     script:
         make validate
