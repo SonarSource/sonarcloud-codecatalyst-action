@@ -3,13 +3,6 @@ env:
     AWS_REGION: eu-central-1
     SONARCLOUD_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
     PYTHON_KEYRING_BACKEND: keyring.backends.fail.Keyring
-    #POETRY_REPOSITORIES_REPOX: VAULT[development/kv/data/repox data.url]
-    #POETRY_HTTP_BASIC_REPOX_USERNAME: vault-${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader
-    #POETRY_HTTP_BASIC_REPOX_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader access_token]
-    #POETRY_VIRTUALENVS_PATH: .cache/poetry/venvs
-    #ARTIFACTORY_URL: VAULT[development/kv/data/repox data.url]
-    #ARTIFACTORY_DEPLOY_USERNAME: vault-${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-deployer
-    #ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-deployer access_token]
     MYPY_CACHE_DIR: ~/mypy_cache
 
 eks_container: &BUILD_TEMPLATE
@@ -25,6 +18,36 @@ eks_container: &BUILD_TEMPLATE
     memory: 8Gb
     docker_arguments:
         CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+
+node_modules_cache_template: &NODE_MODULES_CACHE_TEMPLATE
+    node_modules_cache:
+        folders:
+            - "node_modules"
+        fingerprint_script: cat package-lock.json
+
+install_dependencies_task:
+    <<: *NODE_MODULES_CACHE_TEMPLATE
+    timeout_in: 30m
+    eks_container:
+        <<: *BUILD_TEMPLATE
+    script:
+        make install
+
+validate_task:
+    <<: *NODE_MODULES_CACHE_TEMPLATE
+    eks_container:
+        <<: *BUILD_TEMPLATE
+    depends_on:
+        - install_dependencies
+    script:
+        make validate
+
+generate_build_number_task:
+    only_if: $CIRRUS_BRANCH == 'master' || $CIRRUS_PR_LABELS =~ '.*deploy-dev.*' || $CIRRUS_PR_LABELS =~ ".*deploy-squad.*" || $CIRRUS_PR_LABELS =~ ".*deploy-pr.*" || $CIRRUS_PR_LABELS =~ ".*run-mend.*"
+    eks_container:
+        <<: *BUILD_TEMPLATE
+    script:
+        - source cirrus-env BUILD # to set the environment variable BUILD_NUMBER
 
 mend: &MEND
     timeout_in: 30m
@@ -43,15 +66,6 @@ mend: &MEND
     always:
         ws_artifacts:
             path: 'whitesource/**/*'
-
-# TODO: validate task
-
-generate_build_number_task:
-    only_if: $CIRRUS_BRANCH == 'master' || $CIRRUS_PR_LABELS =~ '.*deploy-dev.*' || $CIRRUS_PR_LABELS =~ ".*deploy-squad.*" || $CIRRUS_PR_LABELS =~ ".*deploy-pr.*" || $CIRRUS_PR_LABELS =~ ".*run-mend.*"
-    eks_container:
-        <<: *BUILD_TEMPLATE
-    script:
-        - source cirrus-env BUILD # to set the environment variable BUILD_NUMBER
 
 mend_scan_task:
     only_if: $CIRRUS_BRANCH == "master"
