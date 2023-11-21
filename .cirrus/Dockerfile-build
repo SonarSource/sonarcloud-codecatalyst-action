@@ -1,0 +1,72 @@
+ARG CIRRUS_AWS_ACCOUNT
+FROM ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-latest
+USER root
+
+ENV CORETTO_APT=https://apt.corretto.aws
+ENV SCANNER_HOME=/opt/sonar-scanner
+ENV SCANNER_VERSION=4.7.0.2747
+ENV SCANNER_BINARIES=https://binaries.sonarsource.com/Distribution/sonar-scanner-cli
+ENV SCANNER_ZIP=sonar-scanner.zip
+ENV AWS_CLI_V2_ZIP=https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+
+# this is required so that docker cli commands connect to the "additional container" instead of `docker.sock`.
+ENV DOCKER_HOST=tcp://localhost:2375
+
+ENV PATH=${SCANNER_HOME}/bin:${PATH}
+
+# Prepare addition of repositories
+RUN apt-get update -y
+RUN apt-get install zip software-properties-common -y
+
+# Add Coretto repository
+RUN curl https://apt.corretto.aws/corretto.key | apt-key add
+RUN add-apt-repository 'deb https://apt.corretto.aws stable main'
+
+# Prepare for node.js installation, remove nodejs and preference for nodejs 14 from base image
+RUN apt-get purge nodejs* -y
+RUN rm /etc/apt/preferences.d/nodejs
+
+# Prepare for Docker installation
+RUN curl -fsSL get.docker.com | CHANNEL=stable sh
+
+# Install all needed apt packages
+RUN apt-get install -y \
+    # for cdk
+    python3-pip python-is-python3 \
+    # for scanner and java build
+    java-17-amazon-corretto-jdk \
+    # prerequisite for cdk, need npm + nodejs
+    nodejs \
+    # docker requirements
+    docker-ce docker-ce-cli containerd.io
+
+# Install yarn
+RUN npm install --global yarn
+
+# Set JAVA_HOME
+ENV JAVA_HOME /usr/lib/jvm/java-17-amazon-corretto
+
+# Add OpenJDK Corretto to PATH
+ENV PATH /usr/lib/jvm/java-17-amazon-corretto/bin:$PATH
+
+# Remove all caches of apt to reduce image size
+RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}
+
+# Configure CDK dependencies
+RUN pip3 install poetry
+RUN npm install -g aws-cdk@v2
+
+# Install Scanner dependencies
+RUN curl ${SCANNER_BINARIES}/sonar-scanner-cli-${SCANNER_VERSION}.zip -o ${SCANNER_ZIP}  \
+    && unzip ${SCANNER_ZIP} \
+    && mv sonar-scanner-${SCANNER_VERSION} ${SCANNER_HOME} \
+    && rm ${SCANNER_ZIP}
+
+# Install AWS CLI v2
+RUN curl ${AWS_CLI_V2_ZIP} -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && aws/install \
+    && rm -rf aws/* \
+    && rmdir aws
+
+USER sonarsource
