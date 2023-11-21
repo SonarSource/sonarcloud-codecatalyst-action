@@ -1,5 +1,5 @@
 {
-  "name": "SonarCloudScan",
+  "name": "SonarCloudScanAction",
   "version": "1.0.0",
   "description": "This Action greets someone and records the time",
   "main": "lib/index.js",

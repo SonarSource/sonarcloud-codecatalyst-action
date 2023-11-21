@@ -1,4 +1,4 @@
-Name: SonarCloudScan-CI-Validation
+Name: SonarCloudScanAction-CI-Validation
 SchemaVersion: "1.0"
 Triggers:
   - Type: PullRequest
@@ -6,7 +6,7 @@ Triggers:
     Branches:
       - feature-.*
 Actions:
-  ValidateSonarCloudScan:
+  ValidateSonarCloudScanAction:
     Identifier: .
     Inputs:
       Sources:
