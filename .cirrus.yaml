@@ -105,5 +105,7 @@ mend_scan_pr_task:
 sonar_scan_task:
     eks_container:
         <<: *BUILD_TEMPLATE
+    depends_on:
+        - run_tests
     script:
         - source .cirrus/scan.sh

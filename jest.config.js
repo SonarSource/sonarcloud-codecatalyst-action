@@ -13,7 +13,7 @@ module.exports = {
         }
     },
     collectCoverage: true,
-    coverageReporters: ['clover', 'lcov', 'html', 'text-summary'],
+    coverageReporters: ['lcovonly'],
     coveragePathIgnorePatterns: ['<rootDir>/lib/.*\\.generated\\.[jt]s', '<rootDir>/test/.*\\.[jt]s', '<rootDir>/.warnings.jsii.js'],
-    reporters: ['default', ['jest-junit', { suiteName: 'jest tests', outputDirectory: 'coverage' }]]
+    coverageDirectory: '<rootDir>/coverage'
 };

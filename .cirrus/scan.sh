@@ -28,6 +28,7 @@ if [[ "${PULL_REQUEST}" ]] || [[ "${GITHUB_BRANCH}" == "master" ]]; then
     "-Dsonar.analysis.sha1=${GIT_SHA1}"
     "-Dsonar.organization=sonarsource"
     "-Dsonar.projectKey=SonarSource_sonarcloud-codecatalyst-action"
+    "-Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
     "-Dsonar.qualitygate.wait=true"
     "-Dsonar.sources=."
     "-Dsonar.exclusions=**/test/**"
