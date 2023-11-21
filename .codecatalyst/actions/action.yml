@@ -3,43 +3,43 @@ Name: 'SonarCloudScan'
 Version: '0.0.0'
 Description: 'Scan your code with SonarCloud to detect bugs, vulnerabilities, and code smells in 26+ programming languages.'
 Configuration:
-  SonarProjectBaseDir:
-    Description: 'Sonar Project Base Directory'
-    Required: true
-    Default: '.'
-    DisplayName: 'Sonar Project Base Directory'
-    Type: string
-  SonarProjectKey:
-    Description: 'Project Key'
-    Required: false
-    DisplayName: 'Project Key'
-    Type: string
-  SonarOrganization:
-    Description: 'Organization'
-    Required: false
-    DisplayName: 'Organization'
-    Type: string
-  SonarAdditionalArgs:
-    Description: 'Additional arguments'
-    Required: false
-    DisplayName: 'Additional arguments'
-    Type: string
-  SonarToken:
-    Description: 'Sonar Token'
-    Required: true
-    DisplayName: 'Sonar Token'
-    Type: string
-  SonarBranchName:
-    Description: 'Branch Name'
-    Required: false
-    Default: '${WorkflowSource.BranchName}'
-    DisplayName: 'Branch Name'
-    Type: string
+    SonarProjectBaseDir:
+        Description: 'Sonar Project Base Directory'
+        Required: true
+        Default: '.'
+        DisplayName: 'Sonar Project Base Directory'
+        Type: string
+    SonarProjectKey:
+        Description: 'Project Key'
+        Required: false
+        DisplayName: 'Project Key'
+        Type: string
+    SonarOrganization:
+        Description: 'Organization'
+        Required: false
+        DisplayName: 'Organization'
+        Type: string
+    SonarAdditionalArgs:
+        Description: 'Additional arguments'
+        Required: false
+        DisplayName: 'Additional arguments'
+        Type: string
+    SonarToken:
+        Description: 'Sonar Token'
+        Required: true
+        DisplayName: 'Sonar Token'
+        Type: string
+    SonarBranchName:
+        Description: 'Branch Name'
+        Required: false
+        Default: '${WorkflowSource.BranchName}'
+        DisplayName: 'Branch Name'
+        Type: string
 Inputs:
-  Sources:
-    Required: true
+    Sources:
+        Required: true
 Environment:
-  Required: false
+    Required: false
 Runs:
-  Using: 'node16'
-  Main: 'dist/index.js'
+    Using: 'node16'
+    Main: 'dist/index.js'

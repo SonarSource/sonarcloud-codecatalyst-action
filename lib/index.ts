@@ -24,7 +24,9 @@ try {
     const token = core.getInput('SonarToken'); // How to greet the person
     const branchName = core.getInput('SonarBranchName');
 
-    console.log(`Project: ${projectKey} Organization:${organization} ProjectBaseDir:${projectBaseDir} BranchName:${branchName} Args:${additionalArgs}`);
+    console.log(
+        `Project: ${projectKey} Organization:${organization} ProjectBaseDir:${projectBaseDir} BranchName:${branchName} Args:${additionalArgs}`
+    );
 
     var { code, stderr } = core.command('docker build -t sonar-scanner .');
     if (code !== 0) {

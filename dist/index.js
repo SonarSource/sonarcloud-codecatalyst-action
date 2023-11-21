@@ -42,7 +42,6 @@ const space = __importStar(__nccwpck_require__(1006));
 const path_1 = __importDefault(__nccwpck_require__(1017));
 const lib_1 = __nccwpck_require__(1617);
 try {
-    console.log('YOP', core.getInput('SonarBranchName'), core.getInput('CommitId'));
     // By default, we are running in the "dist" folder. In order to have to whole source code, we need to map the parent folder ".."
     const parentPath = path_1.default.resolve(__dirname, '..');
     console.log('Parent directory:', parentPath);
@@ -54,12 +53,13 @@ try {
     const projectBaseDir = core.getInput('SonarProjectBaseDir');
     const additionalArgs = core.getInput('SonarAdditionalArgs');
     const token = core.getInput('SonarToken'); // How to greet the person
-    console.log(`Project: ${projectKey} Organization:${organization} ProjectBaseDir:${projectBaseDir} Args:${additionalArgs}`);
+    const branchName = core.getInput('SonarBranchName');
+    console.log(`Project: ${projectKey} Organization:${organization} ProjectBaseDir:${projectBaseDir} BranchName:${branchName} Args:${additionalArgs}`);
     var { code, stderr } = core.command('docker build -t sonar-scanner .');
     if (code !== 0) {
         throw new Error(stderr);
     }
-    var { code, stderr } = core.command(`docker run -v ${parentPath}:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e ARGS=${additionalArgs} sonar-scanner`);
+    var { code, stderr } = core.command(`docker run -v ${parentPath}:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e SONAR_BRANCH_NAME=${branchName} -e ARGS=${additionalArgs} sonar-scanner`);
     if (code !== 0) {
         throw new Error(stderr);
     }

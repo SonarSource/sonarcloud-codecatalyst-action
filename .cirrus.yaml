@@ -1,0 +1,80 @@
+env:
+    AWS_DEPLOYMENT_ROLE_NAME: CodeCatalystActionCICD
+    AWS_REGION: eu-central-1
+    SONARCLOUD_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
+    PYTHON_KEYRING_BACKEND: keyring.backends.fail.Keyring
+    #POETRY_REPOSITORIES_REPOX: VAULT[development/kv/data/repox data.url]
+    #POETRY_HTTP_BASIC_REPOX_USERNAME: vault-${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader
+    #POETRY_HTTP_BASIC_REPOX_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader access_token]
+    #POETRY_VIRTUALENVS_PATH: .cache/poetry/venvs
+    #ARTIFACTORY_URL: VAULT[development/kv/data/repox data.url]
+    #ARTIFACTORY_DEPLOY_USERNAME: vault-${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-deployer
+    #ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-deployer access_token]
+    MYPY_CACHE_DIR: ~/mypy_cache
+
+eks_container: &BUILD_TEMPLATE
+    dockerfile: .cirrus/Dockerfile-build
+    builder_subnet_id: ${CIRRUS_AWS_SUBNET}
+    builder_role: cirrus-builder
+    builder_image: docker-builder-v*
+    builder_instance_type: t2.medium
+    cluster_name: ${CIRRUS_CLUSTER_NAME}
+    region: eu-central-1
+    namespace: default
+    cpu: 2
+    memory: 8Gb
+    docker_arguments:
+        CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+
+mend: &MEND
+    timeout_in: 30m
+    eks_container:
+        <<: *BUILD_TEMPLATE
+        dockerfile: .cirrus/Dockerfile-mend
+    env:
+        WS_APIKEY: VAULT[development/kv/data/mend data.apikey]
+        WS_WSS_URL: VAULT[development/kv/data/mend data.url]
+        WS_USERKEY: VAULT[development/kv/data/mend data.userKey]
+        # No need to clone the full history.
+        # Depth of 1 is not enough because it would fail the build in case of consecutive pushes
+        # (example of error: "Hard resetting to c968ecaf7a1942dacecd78480b3751ac74d53c33...Failed to force reset to c968ecaf7a1942dacecd78480b3751ac74d53c33: object not found!")
+        CIRRUS_CLONE_DEPTH: 50
+    allow_failures: $CIRRUS_CRON != "nightly"
+    always:
+        ws_artifacts:
+            path: 'whitesource/**/*'
+
+# TODO: validate task
+
+generate_build_number_task:
+    only_if: $CIRRUS_BRANCH == 'master' || $CIRRUS_PR_LABELS =~ '.*deploy-dev.*' || $CIRRUS_PR_LABELS =~ ".*deploy-squad.*" || $CIRRUS_PR_LABELS =~ ".*deploy-pr.*" || $CIRRUS_PR_LABELS =~ ".*run-mend.*"
+    eks_container:
+        <<: *BUILD_TEMPLATE
+    script:
+        - source cirrus-env BUILD # to set the environment variable BUILD_NUMBER
+
+mend_scan_task:
+    only_if: $CIRRUS_BRANCH == "master"
+    <<: *MEND
+    depends_on:
+        - generate_build_number
+    mend_script:
+        - source cirrus-env MEND
+        - PROJECT_VERSION='NO-VERSION'
+        - source ws_scan.sh
+
+mend_scan_pr_task:
+    only_if: $CIRRUS_BRANCH != "master" && $CIRRUS_PR_LABELS =~ ".*run-mend.*"
+    <<: *MEND
+    depends_on:
+        - generate_build_number
+    mend_script:
+        - source cirrus-env MEND
+        - PROJECT_VERSION='PR_TRIGGERED'
+        - source ws_scan.sh
+
+sonar_scan_task:
+    eks_container:
+        <<: *BUILD_TEMPLATE
+    script:
+        - source .cirrus/scan.sh
