@@ -1,9 +1,7 @@
 module.exports = {
-    verbose: true,
-    clearMocks: true,
     moduleFileExtensions: ['js', 'ts'],
     testMatch: ['<rootDir>/test/**/?(*.)+(test).js'],
-    testEnvironment: 'node',
+    testEnvironment: 'jsdom',
     coverageThreshold: {
         // todo: back to 90%
         global: {
