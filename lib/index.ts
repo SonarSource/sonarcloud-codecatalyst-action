@@ -1,3 +1,3 @@
-import {execute} from "./action";
+import { execute } from './action';
 
 execute();

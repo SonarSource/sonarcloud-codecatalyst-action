@@ -4,11 +4,11 @@ import * as core from '@aws/codecatalyst-adk-core';
 import * as codecatalystSpace from '@aws/codecatalyst-space';
 // @ts-ignore
 import * as codecatalystProject from '@aws/codecatalyst-project';
-import {RunSummaries, RunSummaryLevel} from "@aws/codecatalyst-run-summaries/lib";
-import path from "path";
-import {Space} from "@aws/codecatalyst-space/lib/types/types";
-import {execute} from "../lib/action";
-import {Project} from "@aws/codecatalyst-project/lib/types/types";
+import { RunSummaries, RunSummaryLevel } from '@aws/codecatalyst-run-summaries/lib';
+import path from 'path';
+import { Space } from '@aws/codecatalyst-space/lib/types/types';
+import { execute } from '../lib/action';
+import { Project } from '@aws/codecatalyst-project/lib/types/types';
 
 jest.mock('@aws/codecatalyst-adk-core');
 jest.mock('@aws/codecatalyst-run-summaries');
@@ -35,7 +35,7 @@ describe('execute function', () => {
         configureCodecatalystMocks();
         configureCoreGetInputMocks();
 
-        jest.spyOn(core, 'command').mockReturnValue({code: 0, stderr: ''});
+        jest.spyOn(core, 'command').mockReturnValue({ code: 0, stderr: '' });
 
         executeWrapper();
 
@@ -70,7 +70,7 @@ describe('execute function', () => {
         configureCodecatalystMocks();
         configureCoreGetInputMocks();
 
-        jest.spyOn(core, 'command').mockReturnValue({code: 428, stderr: 'Simulated build command error'});
+        jest.spyOn(core, 'command').mockReturnValue({ code: 428, stderr: 'Simulated build command error' });
 
         executeWrapper();
 
@@ -84,8 +84,8 @@ describe('execute function', () => {
         configureCodecatalystMocks();
         configureCoreGetInputMocks();
 
-        jest.spyOn(core, 'command').mockReturnValueOnce({code: 0, stderr: ''});
-        jest.spyOn(core, 'command').mockReturnValueOnce({code: 428, stderr: 'Simulated run command error'});
+        jest.spyOn(core, 'command').mockReturnValueOnce({ code: 0, stderr: '' });
+        jest.spyOn(core, 'command').mockReturnValueOnce({ code: 428, stderr: 'Simulated run command error' });
 
         executeWrapper();
 
@@ -99,8 +99,8 @@ describe('execute function', () => {
 
 export function configureCodecatalystMocks(): void {
     jest.spyOn(path, 'resolve').mockReturnValueOnce(parentPath);
-    jest.spyOn(codecatalystSpace, 'getSpace').mockReturnValue(<Space> {name: 'someSpaceName'});
-    jest.spyOn(codecatalystProject, 'getProject').mockReturnValue(<Project> {name: 'someProjectName'})
+    jest.spyOn(codecatalystSpace, 'getSpace').mockReturnValue(<Space>{ name: 'someSpaceName' });
+    jest.spyOn(codecatalystProject, 'getProject').mockReturnValue(<Project>{ name: 'someProjectName' });
 }
 
 export function configureCoreGetInputMocks(): void {
