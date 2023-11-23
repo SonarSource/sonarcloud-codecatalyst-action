@@ -103,6 +103,7 @@ mend_scan_pr_task:
         - source ws_scan.sh
 
 sonar_scan_task:
+    <<: *COVERAGE_CACHE_TEMPLATE
     eks_container:
         <<: *BUILD_TEMPLATE
     depends_on:
