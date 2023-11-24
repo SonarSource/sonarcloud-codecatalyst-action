@@ -18,9 +18,9 @@ export function execute(platformArgs = ''): void {
         // Get inputs from the action
         const projectKey = core.getInput('SonarProjectKey');
         const organization = core.getInput('SonarOrganization');
-        const projectBaseDir = core.getInput('SonarProjectBaseDir');
+        const projectBaseDir = core.getInput('SonarProjectBaseDir') || '.';
         const additionalArgs = core.getInput('SonarAdditionalArgs');
-        const token = core.getInput('SonarToken'); // How to greet the person
+        const token = core.getInput('SonarToken');
         const branchName = core.getInput('SonarBranchName');
 
         console.log(
