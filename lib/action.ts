@@ -28,7 +28,9 @@ export function execute(platformArgs = ''): void {
         );
 
         executeCommandAndValidate(`docker build -t sonar-scanner ${platformArgs} .`);
-        executeCommandAndValidate(`docker run -v ${parentPath}:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e SONAR_BRANCH_NAME=${branchName} -e ARGS=${additionalArgs} sonar-scanner`);
+        executeCommandAndValidate(
+            `docker run -v ${parentPath}:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e SONAR_BRANCH_NAME=${branchName} -e ARGS=${additionalArgs} sonar-scanner`
+        );
 
         // Set outputs of the action
     } catch (error) {
