@@ -109,5 +109,4 @@ sonar_scan_task:
     depends_on:
         - run_tests
     script:
-        - ls -R
         - source .cirrus/scan.sh

@@ -3,8 +3,6 @@ import * as core from '@aws/codecatalyst-adk-core';
 // @ts-ignore
 import * as project from '@aws/codecatalyst-project';
 // @ts-ignore
-import * as runSummaries from '@aws/codecatalyst-run-summaries';
-// @ts-ignore
 import * as space from '@aws/codecatalyst-space';
 import path from 'path';
 import { RunSummaries, RunSummaryLevel } from '@aws/codecatalyst-run-summaries/lib';
@@ -29,17 +27,8 @@ export function execute(platformArgs = ''): void {
             `Project: ${projectKey} Organization:${organization} ProjectBaseDir:${projectBaseDir} BranchName:${branchName} Args:${additionalArgs}`
         );
 
-        var { code, stderr } = core.command(`docker build -t sonar-scanner ${platformArgs} .`);
-        if (code !== 0) {
-            throw new Error(stderr);
-        }
-
-        var { code, stderr } = core.command(
-            `docker run -v ${parentPath}:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e SONAR_BRANCH_NAME=${branchName} -e ARGS=${additionalArgs} sonar-scanner`
-        );
-        if (code !== 0) {
-            throw new Error(stderr);
-        }
+        executeCommandAndValidate(`docker build -t sonar-scanner ${platformArgs} .`);
+        executeCommandAndValidate(`docker run -v ${parentPath}:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e SONAR_BRANCH_NAME=${branchName} -e ARGS=${additionalArgs} sonar-scanner`);
 
         // Set outputs of the action
     } catch (error) {
@@ -47,5 +36,12 @@ export function execute(platformArgs = ''): void {
         console.log(`SonarCloud Scan action failed, reason: ${error}`);
         RunSummaries.addRunSummary(`${error}`, RunSummaryLevel.ERROR);
         core.setFailed(`SonarCloud Scan action failed, reason: ${error}`);
+    }
+}
+
+function executeCommandAndValidate(command: String): void {
+    const { code, stderr } = core.command(command);
+    if (code !== 0) {
+        throw new Error(stderr);
     }
 }
