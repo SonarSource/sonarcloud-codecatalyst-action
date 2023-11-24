@@ -12,7 +12,8 @@
         "noUnusedParameters": true,
         "resolveJsonModule": true,
         "strictNullChecks": true,
-        "strictPropertyInitialization": true
+        "strictPropertyInitialization": true,
+        "inlineSourceMap": true
     },
     "include": ["**/*.ts"],
     "exclude": ["node_modules"]
