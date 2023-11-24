@@ -41,7 +41,7 @@ export function execute(platformArgs = ''): void {
     }
 }
 
-function executeCommandAndValidate(command: String): void {
+function executeCommandAndValidate(command: string): void {
     const { code, stderr } = core.command(command);
     if (code !== 0) {
         throw new Error(stderr);
