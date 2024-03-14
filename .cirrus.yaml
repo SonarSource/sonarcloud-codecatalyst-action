@@ -4,6 +4,8 @@ env:
     SONARCLOUD_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
     PYTHON_KEYRING_BACKEND: keyring.backends.fail.Keyring
     MYPY_CACHE_DIR: ~/mypy_cache
+    NPM_CONFIG_//repox.jfrog.io/artifactory/api/npm/:_authToken: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader access_token]
+    NPM_CONFIG_registry: https://repox.jfrog.io/artifactory/api/npm/npm
 
 eks_container: &BUILD_TEMPLATE
     dockerfile: .cirrus/Dockerfile-build
@@ -44,6 +46,8 @@ run_tests_task:
     <<: *COVERAGE_CACHE_TEMPLATE
     eks_container:
         <<: *BUILD_TEMPLATE
+    depends_on:
+        - install_dependencies
     script:
         make run-tests
 
