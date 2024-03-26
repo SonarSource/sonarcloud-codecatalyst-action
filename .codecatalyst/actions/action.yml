@@ -1,36 +1,36 @@
 SchemaVersion: '1.0'
 Name: 'SonarCloudScanAction'
 Version: '1.0.0'
-Description: 'Scan your code with SonarCloud to detect bugs, vulnerabilities, and code smells in 26+ programming languages.'
+Description: 'This SonarSource project, available as a CodeCatalyst Action, scans your projects with SonarCloud, and helps developers produce Clean Code'
 Configuration:
   SonarProjectBaseDir:
-    Description: 'Sonar Project Base Directory'
+    Description: 'The directory in which the analysis will run'
     Required: false
     Default: '.'
     DisplayName: 'Sonar Project Base Directory'
     Type: string
   SonarProjectKey:
-    Description: 'Project Key'
+    Description: 'The unique key of your Project in SonarCloud'
     Required: false
     DisplayName: 'Project Key'
     Type: string
   SonarOrganization:
-    Description: 'Organization'
+    Description: 'The key of the SonarCloud organization to which the project belongs'
     Required: false
     DisplayName: 'Organization'
     Type: string
   SonarAdditionalArgs:
-    Description: 'Additional arguments'
+    Description: 'Any extra arguments to pass to the scanner'
     Required: false
     DisplayName: 'Additional arguments'
     Type: string
   SonarToken:
-    Description: 'Sonar Token'
+    Description: 'Token used by the scanner to authenticate to SonarCloud'
     Required: true
     DisplayName: 'Sonar Token'
     Type: string
   SonarBranchName:
-    Description: 'Branch Name'
+    Description: 'Name of the branch to which the analysis applies'
     Required: false
     DisplayName: 'Branch Name'
     Type: string
