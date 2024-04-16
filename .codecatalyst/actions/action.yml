@@ -1,7 +1,7 @@
 SchemaVersion: '1.0'
-Name: 'SonarCloudScanAction'
+Name: 'SonarCloud Scan'
 Version: '1.0.0'
-Description: 'This SonarSource project, available as a CodeCatalyst Action, scans your projects with SonarCloud, and helps developers produce Clean Code'
+Description: 'Scan your projects with SonarCloud, and help developers produce Clean Code'
 Configuration:
   SonarProjectBaseDir:
     Description: 'The directory in which the analysis will run'
