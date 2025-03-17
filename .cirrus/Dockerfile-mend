@@ -13,5 +13,5 @@ RUN cd /usr/local/bin \
     && ln -s pip3.9 pip3
 RUN python3.9 -m pip install --upgrade pip
 USER sonarsource
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.8.5 python3 -
 ENV PATH=${PATH}:/home/sonarsource/.local/bin
