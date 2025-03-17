@@ -68,7 +68,7 @@ generate_build_number_task:
         - source cirrus-env BUILD # to set the environment variable BUILD_NUMBER
 
 mend: &MEND
-    timeout_in: 30m
+    timeout_in: 60m
     eks_container:
         <<: *BUILD_TEMPLATE
         dockerfile: .cirrus/Dockerfile-mend
