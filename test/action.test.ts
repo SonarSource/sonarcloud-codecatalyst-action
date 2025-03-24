@@ -27,8 +27,8 @@ const additionalArgs = 'additionalArgs';
 
 const platformArgs = '--platform linux/arm64/v8';
 
-const dockerBuildCommand = `docker build -t sonar-scanner ${platformArgs} .`;
-const dockerRunCommand = `docker run -v ${parentPath}:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e SONAR_BRANCH_NAME=${branchName} -e ARGS=${additionalArgs} sonar-scanner`;
+const dockerBuildCommand = `docker build -t sonar-scanner ${platformArgs} ${parentPath}`;
+const dockerRunCommand = `docker run -v /sources/WorkflowSource:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e SONAR_BRANCH_NAME=${branchName} -e ARGS=${additionalArgs} sonar-scanner`;
 
 describe('execute function', () => {
     it('Should execute the SonarCloud scan successfully', () => {
