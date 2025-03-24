@@ -34,4 +34,8 @@ if [[ -n "${SONAR_BRANCH_NAME}" ]]; then
 fi
 
 unset JAVA_HOME
+pwd
+echo $SONAR_PROJECT_BASE_DIR
+ls -lsa .
+
 sonar-scanner -Dsonar.projectBaseDir="${SONAR_PROJECT_BASE_DIR}" -Dsonar.host.url=${SONARCLOUD_URL} ${PROJECT_OPTION} ${ORGANIZATION_OPTION} $BRANCH_OPTION ${ARGS}

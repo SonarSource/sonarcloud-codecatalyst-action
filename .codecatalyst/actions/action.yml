@@ -1,6 +1,6 @@
 SchemaVersion: '1.0'
 Name: 'SonarCloud Scan'
-Version: '1.0.0'
+Version: '1.0.7'
 Description: 'Scan your projects with SonarCloud, and help developers produce Clean Code'
 Configuration:
   SonarProjectBaseDir:
