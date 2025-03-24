@@ -15,25 +15,26 @@
     },
     "dependencies": {
         "@aws/codecatalyst-adk-core": "^1.0.15",
+        "@aws/codecatalyst-adk-utils": "^1.0.15",
         "@aws/codecatalyst-project": "^1.0.15",
         "@aws/codecatalyst-run-summaries": "^1.0.15",
         "@aws/codecatalyst-space": "^1.0.15",
-        "@aws/codecatalyst-adk-utils": "^1.0.15",
         "@vercel/ncc": "^0.36.1"
     },
     "devDependencies": {
+        "@tsconfig/node16": "^1.0.3",
         "@types/jest": "^29.5.0",
         "@types/node": "^16.11.7",
-        "@tsconfig/node16": "^1.0.3",
-        "@typescript-eslint/parser": "^5.57.0",
-        "eslint": "^8.37.0",
-        "eslint-plugin-jest": "^27.2.1",
-        "eslint-plugin-import": "^2.27.5",
         "@typescript-eslint/eslint-plugin": "^5.57.0",
+        "@typescript-eslint/parser": "^5.57.0",
+        "bats": "^1.11.1",
+        "eslint": "^8.37.0",
+        "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-jest": "^27.2.1",
         "jest": "^29.5.0",
         "jest-environment-jsdom": "29.7.0",
-        "prettier": "2.8.7",
         "jest-junit": "^15.0.0",
+        "prettier": "2.8.7",
         "typescript": "^5.0.3"
     }
 }
