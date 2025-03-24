@@ -44,22 +44,7 @@ teardown() {
   [[ "$output" == *"Gradle project detected."* ]]
 }
 
-@test "Fails if unsupported SONAR_REGION is set" {
-  export SONAR_REGION="eu"
-  run ./entrypoint.sh
-  [ "$status" -eq 1 ]
-  [[ "$output" == *"Unsupported region 'eu'."* ]]
-}
-
-@test "Succeeds with default region when SONAR_REGION is unset" {
-  unset SONAR_REGION
-  run ./entrypoint.sh
-  echo "status: $status, output: $output"
-  [ "$status" -eq 0 ]
-}
-
-@test "Succeeds with US region when SONAR_REGION=US (case insensitive)" {
-  export SONAR_REGION="US"
+@test "Succeeds if everything is properly set" {
   run ./entrypoint.sh
   echo "status: $status, output: $output"
   [ "$status" -eq 0 ]

@@ -17,19 +17,6 @@ if [[ -f "${SONAR_PROJECT_BASE_DIR%/}/build.gradle" ]]; then
   exit 1
 fi
 
-# Convert SONAR_REGION to lowercase for case-insensitive comparison
-region=$(echo "${SONAR_REGION}" | tr '[:upper:]' '[:lower:]')
-if [[ "${region}" == "us" ]]; then
-  SONARCLOUD_URL="https://sonarqube.us"
-  API_BASE_URL="https://api.sonarqube.us"
-elif [[ -z "${region}" ]]; then
-  SONARCLOUD_URL="https://sonarcloud.io"
-  API_BASE_URL="https://api.sonarcloud.io"
-else
-  echo "Unsupported region '${region}'. List of supported regions: 'us'. Please check the 'sonar.region' property or the 'SONAR_REGION' environment variable."
-  exit 1
-fi
-
 if [[ -n "${SONAR_PROJECT_KEY}" ]]; then
   PROJECT_OPTION="-Dsonar.projectKey=${SONAR_PROJECT_KEY}"
 fi
@@ -44,4 +31,4 @@ fi
 
 unset JAVA_HOME
 
-sonar-scanner -Dsonar.projectBaseDir="${SONAR_PROJECT_BASE_DIR}" -Dsonar.scanner.sonarcloudUrl=${SONARCLOUD_URL} -Dsonar.scanner.apiBaseUrl=${API_BASE_URL} ${PROJECT_OPTION} ${ORGANIZATION_OPTION} $BRANCH_OPTION ${ARGS}
+sonar-scanner -Dsonar.projectBaseDir="${SONAR_PROJECT_BASE_DIR}" ${PROJECT_OPTION} ${ORGANIZATION_OPTION} $BRANCH_OPTION ${ARGS}
