@@ -17,10 +17,6 @@ if [[ -f "${SONAR_PROJECT_BASE_DIR%/}/build.gradle" ]]; then
   exit 1
 fi
 
-if [[ -z "${SONARCLOUD_URL}" ]]; then
-  SONARCLOUD_URL="https://sonarcloud.io"
-fi
-
 if [[ -n "${SONAR_PROJECT_KEY}" ]]; then
   PROJECT_OPTION="-Dsonar.projectKey=${SONAR_PROJECT_KEY}"
 fi
@@ -34,4 +30,5 @@ if [[ -n "${SONAR_BRANCH_NAME}" ]]; then
 fi
 
 unset JAVA_HOME
-sonar-scanner -Dsonar.projectBaseDir="${SONAR_PROJECT_BASE_DIR}" -Dsonar.host.url=${SONARCLOUD_URL} ${PROJECT_OPTION} ${ORGANIZATION_OPTION} $BRANCH_OPTION ${ARGS}
+
+sonar-scanner -Dsonar.projectBaseDir="${SONAR_PROJECT_BASE_DIR}" ${PROJECT_OPTION} ${ORGANIZATION_OPTION} $BRANCH_OPTION ${ARGS}

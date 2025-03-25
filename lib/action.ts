@@ -9,11 +9,11 @@ import { RunSummaries, RunSummaryLevel } from '@aws/codecatalyst-run-summaries/l
 
 export function execute(platformArgs = ''): void {
     try {
-        // By default, we are running in the "dist" folder. In order to have to whole source code, we need to map the parent folder ".."
+        // By default, the action runs in the "dist" folder. In order to have to whole source code of the action to build the image, we need to map the parent folder ".."
         const parentPath = path.resolve(__dirname, '..');
         console.log('Parent directory:', parentPath);
-        console.log(`Current CodeCatalyst space ${space.getSpace().name}`);
-        console.log(`Current CodeCatalyst project ${project.getProject().name}`);
+        console.log(`Current CodeCatalyst space: ${space.getSpace().name}`);
+        console.log(`Current CodeCatalyst project: ${project.getProject().name}`);
 
         // Get inputs from the action
         const projectKey = core.getInput('SonarProjectKey');
@@ -27,12 +27,10 @@ export function execute(platformArgs = ''): void {
             `Project: ${projectKey} Organization:${organization} ProjectBaseDir:${projectBaseDir} BranchName:${branchName} Args:${additionalArgs}`
         );
 
-        executeCommandAndValidate(`docker build -t sonar-scanner ${platformArgs} .`);
+        executeCommandAndValidate(`docker build -t sonar-scanner ${platformArgs} ${parentPath}`);
         executeCommandAndValidate(
-            `docker run -v ${parentPath}:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e SONAR_BRANCH_NAME=${branchName} -e ARGS=${additionalArgs} sonar-scanner`
+            `docker run -v /sources/WorkflowSource:/opt/src -e SONAR_PROJECT_BASE_DIR='${projectBaseDir}' -e SONAR_TOKEN=${token} -e SONAR_PROJECT_KEY=${projectKey} -e SONAR_ORGANIZATION=${organization} -e SONAR_BRANCH_NAME=${branchName} -e ARGS=${additionalArgs} sonar-scanner`
         );
-
-        // Set outputs of the action
     } catch (error) {
         // the recommended error handling approach
         console.log(`SonarCloud Scan action failed, reason: ${error}`);

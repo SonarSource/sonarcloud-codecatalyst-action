@@ -5,6 +5,7 @@ install:
 
 run-tests:
 	npm run test
+	npx bats test/*.bats
 
 build:
 	npm run package
