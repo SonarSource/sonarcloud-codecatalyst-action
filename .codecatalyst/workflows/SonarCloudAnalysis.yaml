@@ -2,8 +2,7 @@ Name: SonarCloudAnalysisWithCodeCatalystScanAction
 SchemaVersion: "1.0"
 
 # Optional - Set automatic triggers.
-Triggers:
-  - Type: Push
+Triggers: []
 # Required - Define action configurations.
 Actions:
   SonarCloudScanAction:
