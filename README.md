@@ -1,3 +1,10 @@
+# :warning: Deprecation warning
+
+On October 7th, 2025, AWS announced the retirement of CodeCatalyst. 
+Only existing customers can use the service starting November 7th, 2025. 
+No new spaces can be created on the platform. 
+As a consequence, this tool won't be maintained anymore starting December 16th, 2025. 
+
 # Analyze your Code with SonarQube Cloud
 
 This SonarSource project, available as a CodeCatalyst Action, scans your projects with SonarQube Cloud, and helps developers produce
@@ -6,13 +13,6 @@ This SonarSource project, available as a CodeCatalyst Action, scans your project
 [SonarQube Cloud](https://www.sonarsource.com/products/sonarcloud/) is a widely used static analysis solution for continuous code quality and security inspection.
 It helps developers identify and fix issues in their code that could lead to bugs, vulnerabilities, or decreased development velocity.
 SonarQube Cloud supports the most popular programming languages, including Java, JavaScript, TypeScript, C#, Python, C, C++, and [many more](https://www.sonarsource.com/knowledge/languages/).
-
-## :warning: Deprecation warning
-
-On October 7th, 2025, AWS announced the retirement of CodeCatalyst. 
-Only existing customers can use the service starting November 7th, 2025. 
-No new spaces can be created on the platform. 
-As a consequence, this tool won't be maintained anymore starting December 16th, 2025. 
 
 ## Requirements
 
