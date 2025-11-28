@@ -7,6 +7,13 @@ This SonarSource project, available as a CodeCatalyst Action, scans your project
 It helps developers identify and fix issues in their code that could lead to bugs, vulnerabilities, or decreased development velocity.
 SonarQube Cloud supports the most popular programming languages, including Java, JavaScript, TypeScript, C#, Python, C, C++, and [many more](https://www.sonarsource.com/knowledge/languages/).
 
+## :warning: Deprecation warning
+
+On October 7th, 2025, AWS announced the retirement of CodeCatalyst. 
+Only existing customers can use the service starting November 7th, 2025. 
+No new spaces can be created on the platform. 
+As a consequence, this tool won't be maintained anymore starting December 16th, 2025. 
+
 ## Requirements
 
 * Create your account on SonarQube Cloud. Sign up for free now if it's not already the case! [SonarQube Cloud Sign up](https://www.sonarsource.com/products/sonarcloud/signup/?utm_medium=referral&utm_source=github&utm_campaign=sc-signup&utm_content=signup-sonarcloud-listing-x-x&utm_term=ww-psp-x)
