@@ -1,3 +1,15 @@
+# :warning: Deprecation warning
+
+On October 7th, 2025, AWS announced the retirement of CodeCatalyst. 
+Starting November 7th, 2025, no new spaces can be created, and access is limited to existing customers.
+As a consequence, this tool won't be maintained anymore starting December 16th, 2025. 
+
+* Your code is built with Maven: run `org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar` during the build (more info in the [SonarScanner for Maven](https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/sonarscanner-for-maven/) documentation)
+* Your code is built with Gradle: use the [SonarScanner for Gradle](https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/sonarscanner-for-gradle/) during the build
+* You want to analyze a .NET solution: follow our interactive tutorial for other CI's
+* You want to analyze C and C++ code: rely on our [SonarQube Cloud Scan for C and C++](https://github.com/marketplace/actions/sonarcloud-scan-for-c-and-c) and look at [our sample C and C++ project](https://github.com/sonarsource-cfamily-examples?q=gh-actions-sc&type=all&language=&sort=)
+* Your code uses another language or ecosystem: use [SonarScanner CLI](https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/ci-based-analysis/sonarscanner-cli)
+
 # Analyze your Code with SonarQube Cloud
 
 This SonarSource project, available as a CodeCatalyst Action, scans your projects with SonarQube Cloud, and helps developers produce
@@ -69,13 +81,6 @@ When your workflow runs, the **SonarQube Cloud Scan** will execute and send anal
 - `SonarBranchName` – **Optional** The name of the branch being analyzed.
 - `SonarProjectBaseDir` – **Optional** The base directory of the project to analyze. If not provided, the base directory will be the root of the repository.`
 - `SonarAdditionalArgs` – **Optional** Additional arguments to pass to the SonarScanner CLI. For example, `-Dsonar.verbose=true` to enable verbose logging.
-
-## Do not use this CodeCatalyst action if you are in the following situations
-
-* Your code is built with Maven: run 'org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar' during the build (more info in the [SonarScanner for Maven](https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/sonarscanner-for-maven/) documentation)
-* Your code is built with Gradle: use the [SonarScanner for Gradle](https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/sonarscanner-for-gradle/) during the build
-* You want to analyze a .NET solution: follow our interactive tutorial for other CI's
-* You want to analyze C and C++ code: rely on our [SonarQube Cloud Scan for C and C++](https://github.com/marketplace/actions/sonarcloud-scan-for-c-and-c) and look at [our sample C and C++ project](https://github.com/sonarsource-cfamily-examples?q=gh-actions-sc&type=all&language=&sort=)
 
 ## Have questions or feedback?
 
