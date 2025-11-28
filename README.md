@@ -1,8 +1,7 @@
 # :warning: Deprecation warning
 
 On October 7th, 2025, AWS announced the retirement of CodeCatalyst. 
-Only existing customers can use the service starting November 7th, 2025. 
-No new spaces can be created on the platform. 
+Starting November 7th, 2025, no new spaces can be created, and access is limited to existing customers.
 As a consequence, this tool won't be maintained anymore starting December 16th, 2025. 
 
 # Analyze your Code with SonarQube Cloud
